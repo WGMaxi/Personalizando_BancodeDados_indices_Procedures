@@ -1,17 +1,25 @@
 # Personalizando_BancodeDados_indices_Procedures
 Criação de índices para consultas para o cenário de company com as perguntas (queries sql) para recuperação de informações. Sendo assim, dentro do script será criado os índices com base na consulta SQL.  <br/>
-- Qual o departamento com maior número de pessoas?
+
+- Índice Único para E-mails de Clientes<br/>
+ALTER TABLE cliente<br/>
+ADD UNIQUE index_email(email);<br/>
+- Índice B-Tree para Melhorar a Busca em Produtos Ativos<br/>
+CREATE INDEX idx_produto_ativo ON produto(ativo);<br/>
+- Índice HASH para Acelerar Consultas Específicas<br/>
+CREATE INDEX idx_categoria_hash ON produto(categoria) USING HASH;<br/>
+- Qual o departamento com maior número de pessoas?<br/>
 SELECT department_id, COUNT(*) AS numero_pessoas <br/>
 FROM employees <br/>
 GROUP BY department_id <br/>
 ORDER BY numero_pessoas DESC <br/>
 LIMIT 1; <br/>
--Quais são os departamentos por cidade?
+- Quais são os departamentos por cidade?<br/>
 SELECT city, department_id, COUNT(*) AS numero_pessoas<br/>
 FROM employees<br/>
 JOIN departments ON employees.department_id = departments.department_id<br/>
 GROUP BY city, department_id;<br/>
--Relação de empregados por departamento
+- Relação de empregados por departamento<br/>
 SELECT department_id, employee_id, first_name, last_name<br/>
 FROM employees<br/>
 ORDER BY department_id;<br/>
@@ -21,9 +29,8 @@ CREATE INDEX idx_department_id ON employees(department_id);<br/>
 -- Índice para acelerar a busca por cidade na tabela employees<br/>
 CREATE INDEX idx_city ON employees(city);<br/>
 
--Tipo de Índice e Justificativa:
+- Tipo de Índice e Justificativa:<br/>
 Índice idx_department_id:<br/>
-
 Tipo: Índice B-Tree (padrão);<br/>
 Justificativa: A busca por departamento é comum nas consultas. O índice B-Tree é adequado para consultas de igualdade (como na cláusula WHERE department_id = x) e eficiente para este cenário.<br/>
 Índice idx_city:<br/>
