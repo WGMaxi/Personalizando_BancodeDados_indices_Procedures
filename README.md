@@ -36,33 +36,44 @@ DELIMITER //<br/>
 
 CREATE PROCEDURE ManipularDadosEcommerce(<br/>
     IN p_opcao INT,<br/>
-    IN p_produto_id INT,<br/>
-    IN p_nome_produto VARCHAR(255),<br/>
+    IN p_idproduto INT,<br/>
+    IN p_descrição VARCHAR(255),<br/>
     IN p_quantidade INT,<br/>
-    IN p_preco DECIMAL(10,2)<br/>
+    IN p_valor DECIMAL(10,2)<br/>
 )<br/>
 BEGIN<br/>
     CASE p_opcao<br/>
         WHEN 1 THEN<br/>
             -- Instruções para INSERIR novo produto
-            INSERT INTO produtos (nome_produto, quantidade, preco)<br/>
-            VALUES (p_nome_produto, p_quantidade, p_preco);<br/>
+            INSERT INTO produto (descrição, quantidade, valor)<br/>
+            VALUES (p_descrição, p_quantidade, p_valor);<br/>
         WHEN 2 THEN<br/>
             -- Instruções para ATUALIZAR informações do produto<br/>
             UPDATE produtos <br/>
-            SET nome_produto = p_nome_produto, <br/>
+            SET nome_produto = p_descrição, <br/>
                 quantidade = p_quantidade, <br/>
-                preco = p_preco <br/>
-            WHERE produto_id = p_produto_id;<br/>
+                preco = p_valor <br/>
+            WHERE idproduto = p_produto_id;<br/>
         WHEN 3 THEN<br/>
             -- Instruções para REMOVER produto<br/>
-            DELETE FROM produtos WHERE produto_id = p_produto_id;<br/>
+            DELETE FROM produtos WHERE idproduto = p_produto_id;<br/>
         ELSE<br/>
             SELECT 'Opção inválida';<br/>
     END CASE;<br/>
 END //<br/>
 
 DELIMITER ;<br/>
+
+- Chamada da Procedure
+  
+-- Exemplo de chamada para INSERIR novo produto<br/>
+CALL ManipularDadosEcommerce(1, NULL, 'Novo Produto', 100, 49.99);<br/>
+
+-- Exemplo de chamada para ATUALIZAR informações do produto<br/>
+CALL ManipularDadosEcommerce(2, 1, 'Produto Atualizado', 150, 59.99);<br/>
+
+-- Exemplo de chamada para REMOVER produto<br/>
+CALL ManipularDadosEcommerce(3, 2, NULL, NULL, NULL);<br/>
 
 
 
